@@ -14,7 +14,7 @@
     "swiper": "^11.2.8",
     "web-vitals": "^2.1.4"
   },
-  "homepage": "https://leo961011.github.io/portfolio",
+  "homepage": "https://leo961011.github.io/leow91863-portfolio",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
