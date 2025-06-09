@@ -1,11 +1,35 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Pagination } from 'swiper/modules';
+import 'swiper/css';
+import project1Img1 from '../assets/1-1.webp';
+import project1Img2 from '../assets/1-2.webp';
+import project1Img3 from '../assets/1-3.webp';
+import project2Img1 from '../assets/2-1.png';
+import project2Img2 from '../assets/2-2.png';
+import project2Img3 from '../assets/2-3.png';
+import project3Img1 from '../assets/3-1.jpg';
+import project3Img2 from '../assets/3-2.jpg';
+import project3Img3 from '../assets/3-3.png';
+import project4Img1 from '../assets/4-1.png';
+import project4Img2 from '../assets/4-2.png';
+import project4Img3 from '../assets/4-3.png';
+import project5Img1 from '../assets/5-1.jpg';
+import project5Img2 from '../assets/5-2.png';
+import project5Img3 from '../assets/5-3.png';
+import project6Img1 from '../assets/5-1.jpg';
+import project6Img2 from '../assets/5-2.png';
+import project6Img3 from '../assets/5-3.png';
 
 const Projects = () => {
   const [activeFilter, setActiveFilter] = useState('all');
   const [hoveredProject, setHoveredProject] = useState(null);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [activeElement, setActiveElement] = useState(null);
+  const [hoveredCard, setHoveredCard] = useState(null);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalProject, setModalProject] = useState(null);
 
   const fadeInUp = {
     hidden: { opacity: 0, y: 20 },
@@ -39,6 +63,16 @@ const Projects = () => {
     setActiveElement(null);
   };
 
+  const openPreview = (project) => {
+    setModalProject(project);
+    setModalOpen(true);
+  };
+
+  const closePreview = () => {
+    setModalOpen(false);
+    setModalProject(null);
+  };
+
   const filters = [
     { id: 'all', name: 'All Projects' },
     { id: 'mern', name: 'MERN Stack' },
@@ -51,67 +85,85 @@ const Projects = () => {
       id: 1,
       title: 'E-Commerce Analytics Dashboard',
       category: 'mern',
-      image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
+      image: project1Img1,
+      screenshots: [project1Img1, project1Img2, project1Img3],
       description: 'Real-time analytics dashboard for e-commerce businesses, featuring sales tracking, inventory management, and customer behavior analysis with interactive charts and reports.',
       technologies: ['React', 'Node.js', 'MongoDB', 'Express', 'Chart.js', 'Socket.io'],
-      liveLink: 'http://localhost:3000',
-      githubLink: 'https://github.com/yourusername/ecommerce-analytics-dashboard'
     },
     {
       id: 2,
       title: 'AI-Powered Content Management',
       category: 'fullstack',
-      image: 'https://images.unsplash.com/photo-1551434678-e076c223a692?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
+      image: project2Img1,
+      screenshots: [project2Img1, project2Img2, project2Img3],
       description: 'Modern CMS with AI-powered content suggestions, automated SEO optimization, and multi-language support. Built for a global publishing platform.',
       technologies: ['Next.js', 'TypeScript', 'OpenAI API', 'PostgreSQL', 'Tailwind CSS'],
-      liveLink: '#',
-      githubLink: '#'
     },
     {
       id: 3,
       title: 'Shopify Plus Custom Theme',
       category: 'shopify',
-      image: 'https://images.unsplash.com/photo-1540350394557-8d14678e7f91?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
+      image: project3Img1,
+      screenshots: [project3Img1, project3Img2, project3Img3],
       description: 'Custom Shopify Plus theme for a luxury fashion brand, featuring advanced product filtering, AR product visualization, and seamless checkout experience.',
       technologies: ['Shopify', 'Liquid', 'JavaScript', 'SCSS', 'Three.js', 'WebGL'],
-      liveLink: '#',
-      githubLink: '#'
     },
     {
       id: 4,
       title: 'Real Estate Platform',
       category: 'mern',
-      image: 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
+      image: project4Img1,
+      screenshots: [project4Img1, project4Img2, project4Img3],
       description: 'Full-featured real estate platform with property listings, virtual tours, mortgage calculator, and agent management system.',
       technologies: ['MERN Stack', 'Google Maps API', 'WebRTC', 'Redux', 'Material-UI'],
-      liveLink: '#',
-      githubLink: '#'
     },
     {
       id: 5,
       title: 'Healthcare Appointment System',
       category: 'fullstack',
-      image: 'https://images.unsplash.com/photo-1576091160550-2173dba999ef?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
+      image: project5Img1,
+      screenshots: [project5Img1, project5Img2, project5Img3],
       description: 'Secure healthcare appointment scheduling system with video consultations, patient records management, and automated reminders.',
       technologies: ['React', 'Node.js', 'PostgreSQL', 'WebRTC', 'JWT', 'Twilio'],
-      liveLink: '#',
-      githubLink: '#'
     },
     {
       id: 6,
       title: 'Shopify Custom App',
       category: 'shopify',
-      image: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
+      image: project6Img1,
+      screenshots: [project6Img1, project6Img2, project6Img3],
       description: 'Custom Shopify app for subscription management and recurring billing, featuring customer portal and automated order processing.',
       technologies: ['Shopify API', 'Node.js', 'React', 'MongoDB', 'Stripe API'],
-      liveLink: '#',
-      githubLink: '#'
     }
   ];
 
   const filteredProjects = activeFilter === 'all' 
     ? projects 
     : projects.filter(project => project.category === activeFilter);
+
+  // Add this new component for lazy loaded images
+  const LazyImage = ({ src, alt, className }) => {
+    const [isLoaded, setIsLoaded] = useState(false);
+    const [error, setError] = useState(false);
+
+    return (
+      <div className={`relative ${className}`}>
+        {!isLoaded && !error && (
+          <div className="absolute inset-0 bg-zinc-800 animate-pulse rounded-lg" />
+        )}
+        <img
+          src={src}
+          alt={alt}
+          loading="lazy"
+          onLoad={() => setIsLoaded(true)}
+          onError={() => setError(true)}
+          className={`w-full h-full object-cover rounded-lg transition-opacity duration-300 ${
+            isLoaded ? 'opacity-100' : 'opacity-0'
+          }`}
+        />
+      </div>
+    );
+  };
 
   return (
     <section id="projects" className="relative py-20 overflow-hidden">
@@ -225,23 +277,35 @@ const Projects = () => {
                 initial="hidden"
                 animate="visible"
                 exit="hidden"
-                className="group relative backdrop-blur-sm rounded-2xl overflow-hidden flex flex-col h-full border-2 border-zinc-800 shadow-2xl shadow-black/30"
-                onMouseEnter={() => setHoveredProject(project.id)}
-                onMouseLeave={() => {
-                  setHoveredProject(null);
-                  handleMouseLeave();
-                }}
-                onMouseMove={(e) => handleMouseMove(e, `project-${project.id}`)}
+                className="group relative backdrop-blur-sm rounded-2xl overflow-hidden flex flex-col h-full shadow-2xl shadow-black/30"
+                style={{ border: "1px solid #777" }}
+                whileHover="hovered"
               >
-                {/* Project Image */}
-                <div className="relative h-48 flex items-center justify-center overflow-visible">
-                  <div className="w-[90%] h-[90%] bg-zinc-800 rounded-2xl shadow-2xl shadow-black/40 ring-1 ring-zinc-200/20 flex items-center justify-center overflow-hidden">
-                    <img
+                {/* Spinning border overlay */}
+                <motion.div
+                  className="pointer-events-none absolute inset-0 rounded-2xl border-2 border-indigo-400"
+                  style={{ zIndex: 2 }}
+                  variants={{
+                    hovered: { rotate: 360 },
+                    initial: { rotate: 0 }
+                  }}
+                  initial="initial"
+                  transition={{ duration: 1, ease: "linear" }}
+                />
+
+                {/* Image */}
+                <div className="relative overflow-hidden rounded-lg">
+                  <motion.div
+                    className="relative overflow-hidden rounded-lg"
+                    whileHover={{ scale: 1.06 }}
+                    transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                  >
+                    <LazyImage
                       src={project.image}
                       alt={project.title}
-                      className="w-full h-full object-cover rounded-2xl transition-transform duration-300 group-hover:scale-105 group-hover:-translate-y-1"
+                      className="w-full h-48 md:h-64"
                     />
-                  </div>
+                  </motion.div>
                 </div>
 
                 {/* Project Content */}
@@ -263,41 +327,14 @@ const Projects = () => {
                   </div>
                   {/* Project Links */}
                   <div className="flex gap-4 mt-auto">
-                    <a
-                      href={project.liveLink}
-                      target="_blank"
-                      rel="noopener noreferrer"
+                    <button
+                      onClick={() => openPreview(project)}
                       className="flex-1 px-4 py-2 bg-gradient-to-r from-indigo-400 via-blue-400 to-indigo-500 text-white rounded-lg text-center shadow-lg shadow-indigo-400/40 ring-2 ring-indigo-300/40 hover:brightness-125 transition-all duration-300"
                     >
-                      Live Demo
-                    </a>
-                    <a
-                      href={project.githubLink}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex-1 px-4 py-2 bg-gradient-to-r from-zinc-700 via-zinc-800 to-zinc-900 text-white rounded-lg text-center shadow-lg shadow-indigo-400/20 ring-2 ring-indigo-300/10 hover:brightness-125 transition-all duration-300"
-                    >
-                      GitHub
-                    </a>
+                      Preview
+                    </button>
                   </div>
                 </div>
-
-                {/* Hover Effect */}
-                {activeElement === `project-${project.id}` && (
-                  <motion.div
-                    className="absolute w-[500px] h-[500px] rounded-full pointer-events-none"
-                    style={{
-                      background: 'radial-gradient(circle, rgba(99,102,241,0.15) 0%, rgba(99,102,241,0) 70%)',
-                      left: mousePosition.x - 250,
-                      top: mousePosition.y - 250,
-                    }}
-                    animate={{
-                      x: mousePosition.x - 250,
-                      y: mousePosition.y - 250,
-                    }}
-                    transition={{ type: "spring", stiffness: 150, damping: 15 }}
-                  />
-                )}
               </motion.div>
             ))}
           </AnimatePresence>
@@ -337,6 +374,42 @@ const Projects = () => {
           </motion.button>
         </motion.div>
       </div>
+
+      {/* Modal for Preview */}
+      {modalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+          <div className="bg-white p-8 rounded-lg w-full max-w-4xl">
+            <Swiper
+              slidesPerView={1}
+              spaceBetween={30}
+              loop={true}
+              pagination={{
+                clickable: true,
+              }}
+              modules={[Pagination]}
+              className="mySwiper"
+            >
+              {modalProject.screenshots.map((screenshot, index) => (
+                <SwiperSlide key={index}>
+                  <div className="relative h-full">
+                    <img
+                      src={screenshot}
+                      alt={modalProject.title}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+            <button
+              onClick={closePreview}
+              className="mt-4 px-4 py-2 bg-indigo-500 text-white rounded-lg"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     </section>
   );
 };

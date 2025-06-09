@@ -1,15 +1,18 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectCoverflow, Pagination, Autoplay } from "swiper/modules";
 import Typewriter from "./Typewriter";
-import "swiper/css";
-import "swiper/css/effect-coverflow";
-import "swiper/css/pagination";
-import "swiper/css/navigation";
+import { FaGithub, FaLinkedin, FaTwitter } from "react-icons/fa";
 
-// Import images
-import avatar from "../assets/avatar.jpg";
+// Import Swiper styles with dynamic import
+import("swiper/css");
+import("swiper/css/effect-coverflow");
+import("swiper/css/pagination");
+import("swiper/css/navigation");
+
+// Import images with dynamic import
+const avatar = new URL("../assets/avatar.jpg", import.meta.url).href;
 
 const cardImages = [avatar];
 
@@ -21,6 +24,17 @@ const swipePower = (offset, velocity) => {
 const Hero = () => {
   const [current, setCurrent] = useState(0);
   const [direction, setDirection] = useState(0);
+
+  // Add image preloading
+  useEffect(() => {
+    const preloadImages = () => {
+      cardImages.forEach((src) => {
+        const img = new Image();
+        img.src = src;
+      });
+    };
+    preloadImages();
+  }, []);
 
   const textVariants = {
     hidden: { opacity: 0, y: 20 },
@@ -159,48 +173,48 @@ const Hero = () => {
               variants={textVariants}
               className="flex gap-6 justify-center lg:justify-start mt-12"
             >
-              {["github", "linkedin", "twitter"].map((social) => (
+              {[
+                { icon: FaGithub, url: "github.com" },
+                { icon: FaLinkedin, url: "linkedin.com" },
+                { icon: FaTwitter, url: "twitter.com" }
+              ].map(({ icon: Icon, url }) => (
                 <motion.a
-                  key={social}
-                  href={`https://${social}.com`}
+                  key={url}
+                  href={`https://${url}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-indigo-300 hover:text-white transition-colors duration-300"
                   whileHover={{ scale: 1.1, rotate: 5 }}
                   whileTap={{ scale: 0.95 }}
                 >
-                  <span className="sr-only">{social}</span>
+                  <span className="sr-only">{url}</span>
                   <div className="w-10 h-10 rounded-full bg-indigo-500/10 flex items-center justify-center">
-                    <span className="text-xl">
-                      {social === "github"
-                        ? "📦"
-                        : social === "linkedin"
-                        ? "💼"
-                        : "🐦"}
-                    </span>
+                    <Icon className="text-xl" />
                   </div>
                 </motion.a>
               ))}
             </motion.div>
           </motion.div>
 
-          {/* Right Content - Swiper Slider */}
+          {/* Right Content - Avatar */}
           <div className="flex-1 relative flex items-center justify-center">
-            <div className="relative w-96 h-96 md:w-96 md:h-96 animate-float">
-              {/* Glowing border effect */}
+            <div className="relative w-96 h-96 md:w-96 md:h-96">
+              {/* Gradient border */}
               <div
-                className="absolute inset-0 rounded-full pointer-events-none z-10 animate-glow"
+                className="absolute inset-0 rounded-full pointer-events-none z-0 animate-spin"
                 style={{
-                  boxShadow:
-                    "0 0 40px 10px rgba(99,102,241,0.25), 0 0 0 6px rgba(99,102,241,0.4)",
+                  background: "linear-gradient(45deg, rgb(99, 102, 241), rgb(6 172 255), #4f46e5, rgb(255 255 255))",
+                  padding: "20px",
+                  WebkitMask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                  WebkitMaskComposite: "xor",
+                  maskComposite: "exclude"
                 }}
               />
-              {/* Soft glow behind */}
-              <div className="absolute inset-0 rounded-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 opacity-20 blur-2xl z-0 animate-gradient" />
               <img
                 src={avatar}
+                style={{ width: "97%", height: "97%", margin: "6.5px" }}
                 alt="My Avatar"
-                className="w-full h-full object-cover rounded-full shadow-lg relative z-20 hover:scale-105 transition-transform duration-300"
+                className="w-full h-full object-cover rounded-full shadow-lg relative z-10 hover:scale-105 transition-transform duration-300"
               />
             </div>
           </div>
@@ -260,21 +274,12 @@ export default Hero;
     }
   }
 
-  @keyframes gradient {
-    0% {
-      opacity: 0.2;
-      transform: scale(1) rotate(0deg);
-      background-position: 0% 50%;
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
     }
-    50% {
-      opacity: 0.3;
-      transform: scale(1.1) rotate(180deg);
-      background-position: 100% 50%;
-    }
-    100% {
-      opacity: 0.2;
-      transform: scale(1) rotate(360deg);
-      background-position: 0% 50%;
+    to {
+      transform: rotate(360deg);
     }
   }
 
@@ -286,8 +291,7 @@ export default Hero;
     animation: glow 2s ease-in-out infinite;
   }
 
-  .animate-gradient {
-    animation: gradient 8s ease-in-out infinite;
-    background-size: 200% 200%;
+  .animate-spin {
+    animation: spin 10s linear infinite;
   }
 `}</style>;

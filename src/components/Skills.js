@@ -252,7 +252,7 @@ const Skills = () => {
                         ease: 'linear',
                         delay: 0.5
                       }}
-                    />
+                  />
                   </motion.div>
                 </div>
 

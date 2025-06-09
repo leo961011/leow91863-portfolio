@@ -1,6 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Logo from './Logo';
+import { 
+  RiHome4Line, 
+  RiUserLine, 
+  RiLightbulbLine, 
+  RiFolderLine, 
+  RiMailLine,
+  RiMenuLine,
+  RiCloseLine
+} from 'react-icons/ri';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -55,11 +64,11 @@ const Header = () => {
   }, []);
 
   const menuItems = [
-    { title: 'Home', href: '#home', icon: '🏠' },
-    { title: 'About', href: '#about', icon: '👋' },
-    { title: 'Skills', href: '#skills', icon: '💡' },
-    { title: 'Projects', href: '#projects', icon: '🚀' },
-    { title: 'Contact', href: '#contact', icon: '📬' },
+    { title: 'Home', href: '#home', icon: RiHome4Line },
+    { title: 'About', href: '#about', icon: RiUserLine },
+    { title: 'Skills', href: '#skills', icon: RiLightbulbLine },
+    { title: 'Projects', href: '#projects', icon: RiFolderLine },
+    { title: 'Contact', href: '#contact', icon: RiMailLine },
   ];
 
   const menuVariants = {
@@ -204,139 +213,72 @@ const Header = () => {
             
             {/* Desktop Menu */}
             <div className="hidden md:flex items-center space-x-8">
-              {menuItems.map((item, index) => (
+              {menuItems.map((item) => (
                 <motion.a
-                  key={item.title}
+                  key={item.href}
                   href={item.href}
                   onClick={(e) => scrollToSection(e, item.href.slice(1))}
-                  className="relative group flex items-center space-x-2 text-sm font-medium text-indigo-100 hover:text-white transition-all duration-300"
-                  initial={{ opacity: 0, y: -20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.1 * index }}
+                  className={`flex items-center space-x-2 text-white hover:text-indigo-400 transition-colors duration-300 ${
+                    activeSection === item.href.slice(1) ? 'text-indigo-400' : ''
+                  }`}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
-                  <motion.span 
-                    className="text-lg"
-                    whileHover={{ scale: 1.2, rotate: 5 }}
-                  >
-                    {item.icon}
-                  </motion.span>
-                  <span>{item.title}</span>
-                  <motion.span 
-                    className={`absolute -bottom-1 left-0 h-0.5 bg-gradient-to-r from-indigo-400 to-indigo-500 ${
-                      activeSection === item.href.slice(1) ? 'w-full' : 'w-0'
-                    }`}
-                    whileHover={{ width: "100%" }}
-                    transition={{ duration: 0.3 }}
-                  />
+                  <item.icon className="w-5 h-5" />
+                  <span className="font-medium">{item.title}</span>
                 </motion.a>
               ))}
-              <motion.a
-                href="#contact"
-                onClick={(e) => scrollToSection(e, 'contact')}
-                className="relative px-6 py-2.5 rounded-xl text-sm font-medium text-white bg-gradient-to-r from-indigo-500 to-indigo-600 hover:shadow-lg hover:shadow-indigo-500/25 transition-all duration-300 overflow-hidden group"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.6 }}
-              >
-                <span className="relative z-10">Hire Me</span>
-                <motion.div 
-                  className="absolute inset-0 bg-gradient-to-r from-indigo-400 to-indigo-500"
-                  initial={{ opacity: 0 }}
-                  whileHover={{ opacity: 1 }}
-                  transition={{ duration: 0.3 }}
-                />
-              </motion.a>
             </div>
 
             {/* Mobile Menu Button */}
             <motion.button
-              className="md:hidden p-2 rounded-xl text-indigo-100 hover:bg-indigo-500/10 transition-all duration-300"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-              whileTap={{ scale: 0.95 }}
+              className="md:hidden text-white hover:text-indigo-400 transition-colors duration-300"
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
             >
-              <div className="relative w-6 h-6 flex items-center justify-center">
-                {/* Hamburger/X icon */}
-                <span
-                  className={`absolute left-0 w-6 h-0.5 bg-current transition-all duration-300 ${
-                    isMenuOpen ? "rotate-45" : ""
-                  }`}
-                  style={{
-                    top: isMenuOpen ? '50%' : '0.25rem',
-                    transformOrigin: 'center',
-                  }}
-                />
-                <span
-                  className={`absolute left-0 w-6 h-0.5 bg-current transition-all duration-300 ${
-                    isMenuOpen ? "opacity-0" : ""
-                  }`}
-                  style={{
-                    top: '50%',
-                    transform: 'translateY(-50%)',
-                  }}
-                />
-                <span
-                  className={`absolute left-0 w-6 h-0.5 bg-current transition-all duration-300 ${
-                    isMenuOpen ? "-rotate-45" : ""
-                  }`}
-                  style={{
-                    top: isMenuOpen ? '50%' : '1.25rem',
-                    transformOrigin: 'center',
-                  }}
-                />
-              </div>
+              {isMenuOpen ? (
+                <RiCloseLine className="w-6 h-6" />
+              ) : (
+                <RiMenuLine className="w-6 h-6" />
+              )}
             </motion.button>
           </div>
+        </nav>
 
-          {/* Mobile Menu */}
-          <AnimatePresence>
-            {isMenuOpen && (
-              <motion.div 
-                className="md:hidden bg-zinc-900/95 backdrop-blur-xl rounded-xl mt-4 shadow-2xl shadow-indigo-500/5"
-                initial="closed"
-                animate="open"
-                exit="closed"
-                variants={menuVariants}
-              >
-                <div className="flex flex-col space-y-4 p-4">
+        {/* Mobile Menu */}
+        <AnimatePresence>
+          {isMenuOpen && (
+            <motion.div
+              initial="closed"
+              animate="open"
+              exit="closed"
+              variants={menuVariants}
+              className="md:hidden absolute top-full left-0 right-0 bg-zinc-900/95 backdrop-blur-xl border-t border-zinc-800"
+            >
+              <div className="container mx-auto px-6 py-4">
+                <div className="flex flex-col space-y-4">
                   {menuItems.map((item) => (
                     <motion.a
-                      key={item.title}
+                      key={item.href}
                       href={item.href}
                       onClick={(e) => scrollToSection(e, item.href.slice(1))}
-                      className="flex items-center space-x-3 text-sm font-medium text-indigo-100 hover:text-white transition-all duration-300"
+                      className={`flex items-center space-x-3 text-white hover:text-indigo-400 transition-colors duration-300 ${
+                        activeSection === item.href.slice(1) ? 'text-indigo-400' : ''
+                      }`}
                       variants={menuItemVariants}
-                      whileHover={{ x: 10 }}
+                      whileHover={{ x: 5 }}
                       whileTap={{ scale: 0.95 }}
                     >
-                      <motion.span 
-                        className="text-lg"
-                        whileHover={{ scale: 1.2, rotate: 5 }}
-                      >
-                        {item.icon}
-                      </motion.span>
-                      <span>{item.title}</span>
+                      <item.icon className="w-5 h-5" />
+                      <span className="font-medium">{item.title}</span>
                     </motion.a>
                   ))}
-                  <motion.a
-                    href="#contact"
-                    onClick={(e) => scrollToSection(e, 'contact')}
-                    className="px-6 py-3 rounded-xl text-sm font-medium text-center text-white bg-gradient-to-r from-indigo-500 to-indigo-600 hover:shadow-lg hover:shadow-indigo-500/25 transition-all duration-300"
-                    variants={menuItemVariants}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    Hire Me
-                  </motion.a>
                 </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </nav>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </motion.header>
     </>
   );
